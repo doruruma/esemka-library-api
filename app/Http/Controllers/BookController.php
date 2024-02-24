@@ -9,8 +9,10 @@ class BookController extends Controller
 {
     public function getAll(Request $request)
     {
-        $data = Book::all();
-        return response()->json($data);
+        $data = new Book;
+        if ($request->has('search') && $request->search != '')
+            $data = $data->where('name', 'like', "%$request->search%");
+        return response()->json($data->get());
     }
 
     public function getById($id)
